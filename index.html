@@ -42,14 +42,33 @@
         }
         code, pre {
             font-family: 'Fira Code', monospace;
-            direction: ltr;
-            text-align: left;
+            direction: ltr !important;
+            text-align: left !important;
+            unicode-bidi: isolate;
         }
         pre {
-            font-size: clamp(0.75rem, 2.2vw, 0.875rem);
-            line-height: 1.65;
+            font-size: 12.5px;
+            line-height: 1.55;
+            padding: 12px;
+            max-width: 100%;
+            box-sizing: border-box;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            margin: 0;
+        }
+        @media (min-width: 640px) {
+            pre {
+                font-size: 0.875rem;
+                line-height: 1.65;
+            }
+        }
+        .code-box, .code-container {
+            direction: ltr !important;
+            text-align: left !important;
+            unicode-bidi: isolate;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
         }
         .table-wrapper {
             width: 100%;
@@ -303,9 +322,12 @@
                 <!-- 2. Basic Program Structure -->
                 <div class="space-y-3">
                     <h3 class="text-lg font-bold">2. Basic Program Structure</h3>
-                    <div class="code-box relative rounded-2xl bg-slate-900 text-slate-100 p-4 overflow-x-auto">
-                        <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 font-sans">نسخ</button>
-<pre class="text-xs sm:text-sm leading-relaxed"><code><span class="tok-kw">using</span> System;
+                    <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                        <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                            <span class="text-xs font-bold text-sky-400">Program.cs</span>
+                            <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                        </div>
+<pre><code><span class="tok-kw">using</span> System;
 
 <span class="tok-kw">namespace</span> MyApp
 {
@@ -357,16 +379,20 @@
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-4 pt-2">
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                             <h4 class="font-bold text-indigo-600 dark:text-indigo-400">الكلمة المفتاحية <code>var</code></h4>
                             <p class="text-xs sm:text-sm">الـ Compiler يستنتج نوع المتغير تلقائياً من القيمة، لكنه يبقى <strong>Strongly Typed</strong> (لا يمكن تغيير نوعه لاحقاً).</p>
-                            <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs"><code><span class="tok-kw">var</span> age = <span class="tok-num">20</span>;
+                            <div class="code-container rounded-xl bg-slate-900 text-slate-100">
+<pre><code><span class="tok-kw">var</span> age = <span class="tok-num">20</span>;
 age = <span class="tok-str">"Ali"</span>; <span class="tok-cmt">// Compile Error!</span></code></pre>
+                            </div>
                         </div>
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                             <h4 class="font-bold text-indigo-600 dark:text-indigo-400">الثوابت <code>const</code></h4>
                             <p class="text-xs sm:text-sm">قيمة ثابتة لا يمكن تغييرها بعد تعريفها.</p>
-                            <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs"><code><span class="tok-kw">const double</span> PI = <span class="tok-num">3.14</span>;</code></pre>
+                            <div class="code-container rounded-xl bg-slate-900 text-slate-100">
+<pre><code><span class="tok-kw">const double</span> PI = <span class="tok-num">3.14</span>;</code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -389,18 +415,22 @@ age = <span class="tok-str">"Ali"</span>; <span class="tok-cmt">// Compile Error
                         </table>
                     </div>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="code-box relative rounded-2xl bg-slate-900 text-slate-100 p-4">
-                            <span class="text-xs text-slate-400 block mb-2">// مثال Parse</span>
-<pre class="text-xs"><code>Console.<span class="tok-method">Write</span>(<span class="tok-str">"Enter age: "</span>);
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-slate-300">// مثال Parse</span>
+                            </div>
+<pre><code>Console.<span class="tok-method">Write</span>(<span class="tok-str">"Enter age: "</span>);
 <span class="tok-kw">int</span> age = <span class="tok-kw">int</span>.<span class="tok-method">Parse</span>(Console.<span class="tok-method">ReadLine</span>());
-Console.<span class="tok-method">WriteLine</span>(age + <span class="tok-num">1</span>); <span class="tok-cmt">// إذا أدخل 20 -> الناتج 21</span></code></pre>
+Console.<span class="tok-method">WriteLine</span>(age + <span class="tok-num">1</span>); <span class="tok-cmt">// إذا أدخل 20 -> 21</span></code></pre>
                         </div>
-                        <div class="code-box relative rounded-2xl bg-slate-900 text-slate-100 p-4">
-                            <span class="text-xs text-slate-400 block mb-2">// مثال TryParse الآمن</span>
-<pre class="text-xs"><code><span class="tok-kw">if</span> (<span class="tok-kw">int</span>.<span class="tok-method">TryParse</span>(<span class="tok-str">"ABC"</span>, <span class="tok-kw">out int</span> age))
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-slate-300">// مثال TryParse الآمن</span>
+                            </div>
+<pre><code><span class="tok-kw">if</span> (<span class="tok-kw">int</span>.<span class="tok-method">TryParse</span>(<span class="tok-str">"ABC"</span>, <span class="tok-kw">out int</span> age))
     Console.<span class="tok-method">WriteLine</span>(age);
 <span class="tok-kw">else</span>
-    Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Invalid age"</span>); <span class="tok-cmt">// الناتج</span></code></pre>
+    Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Invalid age"</span>);</code></pre>
                         </div>
                     </div>
                 </div>
@@ -409,19 +439,21 @@ Console.<span class="tok-method">WriteLine</span>(age + <span class="tok-num">1<
                 <div class="space-y-3">
                     <h3 class="text-lg font-bold">5 & 6. Operators, Conditions & Loops</h3>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 min-w-0">
                             <h4 class="font-bold mb-2">العمليات الحسابية والمنطقية</h4>
                             <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                                 الحسابية: <code class="font-bold">+ , - , * , / , %</code> (باقي القسمة)<br>
                                 المقارنة: <code class="font-bold">== , != , > , < , >= , <=</code><br>
                                 المنطقية: <code class="font-bold">&&</code> (AND) , <code class="font-bold">||</code> (OR) , <code class="font-bold">!</code> (NOT)
                             </p>
-                            <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-3"><code><span class="tok-kw">int</span> age = <span class="tok-num">20</span>;
+                            <div class="code-container rounded-xl bg-slate-900 text-slate-100 mt-3">
+<pre><code><span class="tok-kw">int</span> age = <span class="tok-num">20</span>;
 <span class="tok-kw">if</span> (age >= <span class="tok-num">18</span>) Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Adult"</span>);
 <span class="tok-kw">else</span> Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Child"</span>);
 <span class="tok-cmt">// الناتج: Adult</span></code></pre>
+                            </div>
                         </div>
-                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 min-w-0">
                             <h4 class="font-bold mb-2">الحلقات التكرارية (Loops)</h4>
                             <ul class="text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
                                 <li><code class="font-bold text-indigo-600 dark:text-indigo-400">for</code>: تكرار بعدد أو شرط محدد.</li>
@@ -437,17 +469,21 @@ Console.<span class="tok-method">WriteLine</span>(age + <span class="tok-num">1<
                 <div class="space-y-4">
                     <h3 class="text-lg font-bold">7 & 8. Arrays, Methods, OOP & .NET Essentials</h3>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4">
-                            <span class="text-xs text-indigo-400 font-bold block mb-2">// Arrays & Methods</span>
-<pre class="text-xs leading-relaxed"><code><span class="tok-kw">int</span>[] marks = { <span class="tok-num">70</span>, <span class="tok-num">80</span>, <span class="tok-num">90</span>, <span class="tok-num">85</span> };
-Console.<span class="tok-method">WriteLine</span>(marks[<span class="tok-num">0</span>]); <span class="tok-cmt">// 70 (يبدأ من 0)</span>
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs text-indigo-400 font-bold">// Arrays & Methods</span>
+                            </div>
+<pre><code><span class="tok-kw">int</span>[] marks = { <span class="tok-num">70</span>, <span class="tok-num">80</span>, <span class="tok-num">90</span>, <span class="tok-num">85</span> };
+Console.<span class="tok-method">WriteLine</span>(marks[<span class="tok-num">0</span>]); <span class="tok-cmt">// 70</span>
 
 <span class="tok-kw">static int</span> <span class="tok-method">Add</span>(<span class="tok-kw">int</span> a, <span class="tok-kw">int</span> b) => a + b;
 Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</span>(<span class="tok-num">5</span>, <span class="tok-num">3</span>)); <span class="tok-cmt">// 8</span></code></pre>
                         </div>
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4">
-                            <span class="text-xs text-indigo-400 font-bold block mb-2">// OOP: Class, Property, Constructor</span>
-<pre class="text-xs leading-relaxed"><code><span class="tok-kw">class</span> <span class="tok-type">Student</span> {
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs text-indigo-400 font-bold">// OOP: Class, Property, Constructor</span>
+                            </div>
+<pre><code><span class="tok-kw">class</span> <span class="tok-type">Student</span> {
     <span class="tok-kw">public string</span> Name { <span class="tok-kw">get</span>; <span class="tok-kw">set</span>; }
     <span class="tok-kw">public</span> <span class="tok-method">Student</span>(<span class="tok-kw">string</span> name) { Name = name; }
 }
@@ -564,19 +600,23 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
                 <div class="space-y-3">
                     <h3 class="text-lg font-bold">1 & 2. أول برنامج Button Click (XAML + C#)</h3>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
-                            <span class="text-xs font-bold text-amber-400 block mb-2">XAML (XML)</span>
-                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
-<pre class="text-xs leading-relaxed"><code>&lt;<span class="tok-tag">StackPanel</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"15"</span>&gt;
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-amber-400">XAML (XML)</span>
+                                <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                            </div>
+<pre><code>&lt;<span class="tok-tag">StackPanel</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"15"</span>&gt;
     &lt;<span class="tok-tag">Button</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Click me"</span>
             <span class="tok-attr">Click</span>=<span class="tok-str">"Hello_Click"</span> /&gt;
     &lt;<span class="tok-tag">TextBlock</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"lblOut"</span> /&gt;
 &lt;/<span class="tok-tag">StackPanel</span>&gt;</code></pre>
                         </div>
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
-                            <span class="text-xs font-bold text-sky-400 block mb-2">C# Handler</span>
-                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
-<pre class="text-xs leading-relaxed"><code><span class="tok-kw">int</span> clicks = <span class="tok-num">0</span>;
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-sky-400">C# Handler</span>
+                                <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                            </div>
+<pre><code><span class="tok-kw">int</span> clicks = <span class="tok-num">0</span>;
 
 <span class="tok-kw">private void</span> <span class="tok-method">Hello_Click</span>(<span class="tok-kw">object</span> sender, <span class="tok-type">RoutedEventArgs</span> e)
 {
@@ -620,10 +660,12 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
                 <div class="space-y-3">
                     <h3 class="text-lg font-bold">5. برنامج ComboBox + Button + Delegate (مهم جداً)</h3>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
-                            <span class="text-xs font-bold text-amber-400 block mb-2">XAML</span>
-                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
-<pre class="text-xs leading-relaxed"><code>&lt;<span class="tok-tag">StackPanel</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"15"</span>&gt;
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-amber-400">XAML</span>
+                                <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                            </div>
+<pre><code>&lt;<span class="tok-tag">StackPanel</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"15"</span>&gt;
     &lt;<span class="tok-tag">TextBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"txtName"</span> <span class="tok-attr">Width</span>=<span class="tok-str">"200"</span> /&gt;
     &lt;<span class="tok-tag">ComboBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"cmbLang"</span>
               <span class="tok-attr">SelectedIndex</span>=<span class="tok-str">"0"</span>
@@ -635,10 +677,12 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
     &lt;<span class="tok-tag">TextBlock</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"lblOut"</span> /&gt;
 &lt;/<span class="tok-tag">StackPanel</span>&gt;</code></pre>
                         </div>
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
-                            <span class="text-xs font-bold text-sky-400 block mb-2">C# Code-Behind</span>
-                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
-<pre class="text-xs leading-relaxed"><code><span class="tok-type">Func</span>&lt;<span class="tok-kw">string</span>, <span class="tok-kw">string</span>&gt; greeter = English;
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-sky-400">C# Code-Behind</span>
+                                <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                            </div>
+<pre><code><span class="tok-type">Func</span>&lt;<span class="tok-kw">string</span>, <span class="tok-kw">string</span>&gt; greeter = English;
 
 <span class="tok-kw">static string</span> <span class="tok-method">English</span>(<span class="tok-kw">string</span> n) =&gt; <span class="tok-str">$"Hello, {n}!"</span>;
 <span class="tok-kw">static string</span> <span class="tok-method">Spanish</span>(<span class="tok-kw">string</span> n) =&gt; <span class="tok-str">$"Hola, {n}!"</span>;
@@ -690,10 +734,12 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
                 <div class="space-y-3">
                     <h3 class="text-lg font-bold">3 & 4. برنامج Counter (Publisher & Subscribers)</h3>
                     <div class="grid md:grid-cols-2 gap-4">
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
-                            <span class="text-xs font-bold text-emerald-400 block mb-2">Counter Class (Publisher)</span>
-                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
-<pre class="text-xs leading-relaxed"><code><span class="tok-kw">public class</span> <span class="tok-type">Counter</span>
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-emerald-400">Counter Class (Publisher)</span>
+                                <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                            </div>
+<pre><code><span class="tok-kw">public class</span> <span class="tok-type">Counter</span>
 {
     <span class="tok-kw">public int</span> Value { <span class="tok-kw">get</span>; <span class="tok-kw">private set</span>; }
     <span class="tok-kw">public event</span> <span class="tok-type">EventHandler</span>&lt;<span class="tok-kw">int</span>&gt;? ValueChanged;
@@ -705,10 +751,12 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
     }
 }</code></pre>
                         </div>
-                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
-                            <span class="text-xs font-bold text-sky-400 block mb-2">MainWindow (Subscribers)</span>
-                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
-<pre class="text-xs leading-relaxed"><code><span class="tok-type">Counter</span> counter = <span class="tok-kw">new</span> <span class="tok-type">Counter</span>();
+                        <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                            <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                                <span class="text-xs font-bold text-sky-400">MainWindow (Subscribers)</span>
+                                <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ</button>
+                            </div>
+<pre><code><span class="tok-type">Counter</span> counter = <span class="tok-kw">new</span> <span class="tok-type">Counter</span>();
 
 <span class="tok-kw">public</span> <span class="tok-method">MainWindow</span>() {
     <span class="tok-method">InitializeComponent</span>();
@@ -824,9 +872,12 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
                 <!-- MediBook XAML Example -->
                 <div class="space-y-3">
                     <h3 class="text-lg font-bold">7. بناء واجهة MediBook (أهم مثال تطبيقي)</h3>
-                    <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative overflow-x-auto">
-                        <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300">نسخ XAML</button>
-<pre class="text-xs leading-relaxed"><code>&lt;<span class="tok-tag">Window</span> <span class="tok-attr">x:Class</span>=<span class="tok-str">"MediBook.MainWindow"</span> <span class="tok-attr">Title</span>=<span class="tok-str">"MediBook"</span> <span class="tok-attr">Height</span>=<span class="tok-str">"460"</span> <span class="tok-attr">Width</span>=<span class="tok-str">"720"</span>&gt;
+                    <div class="code-box rounded-2xl bg-slate-900 text-slate-100 border border-slate-800">
+                        <div class="flex items-center justify-between px-4 py-2 bg-slate-800/80 border-b border-slate-700/70">
+                            <span class="text-xs font-bold text-amber-400">MainWindow.xaml</span>
+                            <button onclick="copyCode(this)" class="copy-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-sans">نسخ XAML</button>
+                        </div>
+<pre><code>&lt;<span class="tok-tag">Window</span> <span class="tok-attr">x:Class</span>=<span class="tok-str">"MediBook.MainWindow"</span> <span class="tok-attr">Title</span>=<span class="tok-str">"MediBook"</span> <span class="tok-attr">Height</span>=<span class="tok-str">"460"</span> <span class="tok-attr">Width</span>=<span class="tok-str">"720"</span>&gt;
     &lt;<span class="tok-tag">DockPanel</span>&gt;
         &lt;<span class="tok-tag">Menu</span> <span class="tok-attr">DockPanel.Dock</span>=<span class="tok-str">"Top"</span>&gt;
             &lt;<span class="tok-tag">MenuItem</span> <span class="tok-attr">Header</span>=<span class="tok-str">"File"</span> /&gt;
@@ -905,64 +956,64 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
 
                 <div class="grid md:grid-cols-2 gap-4 text-xs">
                     <!-- Error 1 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">1. خطأ نوع البيانات</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">Compile Error</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>int age = "20"; // خطأ: نص داخل int</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>int age = 20;   // التصحيح</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>int age = "20"; // خطأ: نص داخل int</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>int age = 20;   // التصحيح</code></pre></div>
                     </div>
                     <!-- Error 2 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">2. خطأ Parse</span><span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">FormatException</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>int age = int.Parse("ABC"); // يرمي Exception</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>int.TryParse("ABC", out int age); // آمن</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>int age = int.Parse("ABC"); // يرمي Exception</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>int.TryParse("ABC", out int age); // آمن</code></pre></div>
                     </div>
                     <!-- Error 3 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">3. خطأ var</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">Compile Error</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>var number = 10; number = "Ali";</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>string number = "Ali";</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>var number = 10; number = "Ali";</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>string number = "Ali";</code></pre></div>
                     </div>
                     <!-- Error 4 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">4. خطأ Array Index</span><span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">IndexOutOfRange</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>int[] nums = {10, 20, 30}; nums[3];</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>Console.WriteLine(nums[2]); // آخر فهرس 2</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>int[] nums = {10, 20, 30}; nums[3];</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>Console.WriteLine(nums[2]); // آخر فهرس 2</code></pre></div>
                     </div>
                     <!-- Error 5 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">5. عدم تطابق اسم Handler</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">XAML Error</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Click="Hello_Click" vs void HelloClick(...)</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>توحيد الاسم في XAML و C# إلى Hello_Click</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>Click="Hello_Click" vs void HelloClick(...)</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>توحيد الاسم في XAML و C# إلى Hello_Click</code></pre></div>
                     </div>
                     <!-- Error 6 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">6. تشغيل Handler مرتين</span><span class="px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Logical Bug</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>ربط Click في XAML وأيضاً += في C#</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>حذف أحد التسجيلين والاكتفاء بواحد فقط</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>ربط Click في XAML وأيضاً += في C#</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>حذف أحد التسجيلين والاكتفاء بواحد فقط</code></pre></div>
                     </div>
                     <!-- Error 7 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">7. إطلاق Event بدون مشتركين</span><span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">NullReference</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Changed.Invoke(this, EventArgs.Empty);</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>Changed?.Invoke(this, EventArgs.Empty);</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>Changed.Invoke(this, EventArgs.Empty);</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>Changed?.Invoke(this, EventArgs.Empty);</code></pre></div>
                     </div>
                     <!-- Error 8 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">8. عدم ربط Handler</span><span class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700">Nothing Happens</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>&lt;Button Content="Click" /&gt; // بدون Click=</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>&lt;Button Content="Click" Click="Button_Click" /&gt;</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>&lt;Button Content="Click" /&gt; // بدون Click=</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>&lt;Button Content="Click" Click="Button_Click" /&gt;</code></pre></div>
                     </div>
                     <!-- Error 9 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">9. ترتيب الأعمدة في Grid</span><span class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700">Layout Bug</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Grid.Column="2" بدون تعريف ColumnDefinitions</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>تعريف 3 أعمدة داخل Grid.ColumnDefinitions</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>Grid.Column="2" بدون تعريف ColumnDefinitions</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>تعريف 3 أعمدة داخل Grid.ColumnDefinitions</code></pre></div>
                     </div>
                     <!-- Error 10 -->
-                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2 min-w-0">
                         <div class="flex justify-between font-bold"><span class="text-rose-600">10. تجمد الواجهة (Freeze)</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">UI Thread</span></div>
-                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Thread.Sleep(10000); داخل Button_Click</code></pre>
-                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>تجنب العمليات الطويلة المتزامنة على UI Thread</code></pre>
+                        <div class="code-container rounded-lg bg-slate-900 text-rose-300"><pre><code>Thread.Sleep(10000); داخل Button_Click</code></pre></div>
+                        <div class="code-container rounded-lg bg-slate-900 text-emerald-300"><pre><code>تجنب العمليات الطويلة المتزامنة على UI Thread</code></pre></div>
                     </div>
                 </div>
             </section>
@@ -1182,6 +1233,32 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
             }, 2500);
         }
 
+        function copyCode(btn) {
+            const box = btn.closest('.code-box') || btn.parentElement;
+            const codeEl = box.querySelector('pre code') || box.querySelector('pre');
+            if (!codeEl) return;
+            const text = codeEl.innerText;
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast('تم نسخ الكود بنجاح!');
+            } catch (err) {
+                showToast('تعذر النسخ التلقائي');
+            }
+            document.body.removeChild(ta);
+        }
+
+        function resetCodeScrollPositions() {
+            document.querySelectorAll('pre').forEach(pre => {
+                pre.scrollLeft = 0;
+            });
+        }
+
         // 4. Search Filter (Desktop + Mobile Inputs)
         function handleSearchFilter(term) {
             const q = term.trim().toLowerCase();
@@ -1227,7 +1304,7 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
 
         function renderOutputQuestions() {
             outputGrid.innerHTML = outputQuestions.map(q => `
-                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col justify-between gap-3">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col justify-between gap-3 min-w-0">
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400">سؤال ${q.id}</span>
@@ -1235,7 +1312,9 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
                                 إظهار الناتج
                             </button>
                         </div>
-                        <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs leading-relaxed"><code>${q.code}</code></pre>
+                        <div class="code-container rounded-xl bg-slate-900 text-slate-100">
+                            <pre><code>${q.code}</code></pre>
+                        </div>
                     </div>
                     <div id="out-ans-${q.id}" class="hidden p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-xs">
                         <div class="font-bold text-emerald-700 dark:text-emerald-300 mb-1">الناتج: <pre class="inline font-mono bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 text-slate-900 dark:text-white">${q.ans}</pre></div>
@@ -1496,7 +1575,9 @@ Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</
             renderOutputQuestions();
             renderMCQs();
             updateMCQProgress();
+            resetCodeScrollPositions();
         });
+        window.addEventListener('load', resetCodeScrollPositions);
     </script>
 </body>
 </html>

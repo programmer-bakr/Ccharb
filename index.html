@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملخص الشامل – Visual Programming with C#</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cairo & Tajawal for Arabic, Fira Code for Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+        code, pre {
+            font-family: 'Fira Code', monospace;
+            direction: ltr;
+            text-align: left;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Syntax Highlighting Tokens */
+        .tok-kw { color: #c678dd; font-weight: 600; }
+        .tok-type { color: #e5c07b; }
+        .tok-str { color: #98c379; }
+        .tok-num { color: #d19a66; }
+        .tok-cmt { color: #7f848e; font-style: italic; }
+        .tok-tag { color: #e06c75; }
+        .tok-attr { color: #d19a66; }
+        .tok-method { color: #61afef; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
+
+    <!-- Toast Notification for Copy & Exam Alerts -->
+    <div id="toast" class="fixed bottom-5 left-5 z-50 hidden transform transition-all duration-300 translate-y-4 opacity-0">
+        <div class="bg-slate-900 dark:bg-indigo-600 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm font-semibold">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <span id="toast-msg">تم النسخ بنجاح!</span>
+        </div>
+    </div>
+
+    <!-- Top Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="القائمة">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                        C#
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">
+                            Visual Programming with C#
+                        </h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">المراجعة الشاملة للامتحان النظري والعملي</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Theme Toggle -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="relative hidden sm:block w-56 md:w-64">
+                    <input type="text" id="searchInput" placeholder="ابحث في التعاريف والأقسام..." class="w-full pl-3 pr-9 py-1.5 text-sm rounded-xl bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-slate-900 outline-none transition">
+                    <svg class="w-4 h-4 text-slate-400 absolute right-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+
+                <a href="#sec-9" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition">
+                    <span>اختبار 80 MCQ</span>
+                </a>
+
+                <button id="themeToggle" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="تبديل المظهر">
+                    <svg id="sunIcon" class="w-5 h-5 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg id="moonIcon" class="w-5 h-5 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 hidden lg:hidden">
+        <div id="mobile-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <aside class="fixed top-0 right-0 bottom-0 w-72 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 p-5 overflow-y-auto shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <span class="font-extrabold text-indigo-600 dark:text-indigo-400">فهرس المراجعة</span>
+                <button id="close-mobile-menu" class="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <nav class="space-y-1.5 text-sm font-semibold" id="mobile-nav-links"></nav>
+        </aside>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8">
+
+        <!-- Sticky Desktop Sidebar -->
+        <aside class="hidden lg:block w-72 shrink-0">
+            <div class="sticky top-24 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
+                <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 px-2">أقسام المراجعة الشاملة</div>
+                <nav class="space-y-1 text-sm font-semibold" id="desktop-nav-links">
+                    <a href="#sec-1" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold">1</span>
+                        <span>أساسيات C# – Foundation</span>
+                    </a>
+                    <a href="#sec-2" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold">2</span>
+                        <span>Week 5: Event-Driven</span>
+                    </a>
+                    <a href="#sec-3" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold">3</span>
+                        <span>Week 6: Events & Handlers</span>
+                    </a>
+                    <a href="#sec-4" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold">4</span>
+                        <span>Week 7: Routed Events</span>
+                    </a>
+                    <a href="#sec-5" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-xs font-bold">5</span>
+                        <span>Week 8: Layout & XAML (1-17)</span>
+                    </a>
+                    <a href="#sec-6" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-300 flex items-center justify-center text-xs font-bold">6</span>
+                        <span>برامج الأخطاء وتصحيحها</span>
+                    </a>
+                    <a href="#sec-7" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center text-xs font-bold">7</span>
+                        <span>أسئلة نواتج الأكواد Output</span>
+                    </a>
+                    <a href="#sec-8" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/50 text-slate-700 dark:text-slate-300 transition">
+                        <span class="w-6 h-6 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center text-xs font-bold">8</span>
+                        <span>المقارنات والتعاريف للحفظ</span>
+                    </a>
+                    <a href="#sec-9" class="nav-link flex items-center gap-2.5 px-3 py-2 rounded-xl bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 transition mt-2">
+                        <span class="w-6 h-6 rounded-lg bg-white/20 text-white flex items-center justify-center text-xs font-bold">9</span>
+                        <span>الاختبار الشامل (80 MCQ)</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content Column -->
+        <main class="flex-1 min-w-0 space-y-10">
+
+            <!-- Hero Intro Card -->
+            <section class="bg-gradient-to-l from-indigo-600 via-indigo-700 to-purple-800 rounded-3xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-xs font-bold mb-4 backdrop-blur-sm">
+                        <span>مراجعة الامتحان النظري والعملي</span>
+                        <span>•</span>
+                        <span>5 محاضرات شاملة</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-3 leading-snug">
+                        الملخص الشامل – Visual Programming with C#
+                    </h2>
+                    <p class="text-indigo-100 text-sm sm:text-base leading-relaxed mb-5">
+                        تم ترتيب المادة بالكامل لتشمل أساسيات لغة C#، البرمجة المعتمدة على الأحداث (Event-Driven)، التعامل مع XAML و Event Handlers، الموجهات (Routed Events)، وتصميم الواجهات (Week 8: الصفحات 1–17 فقط)، مع تدريبات Output واختبار تفاعلي مكون من <strong>80 سؤال MCQ</strong>.
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20">التعاريف والمفاهيم</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20">الفروقات والمقارنات</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20">برامج C# و XAML</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20">تصحيح الأخطاء</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20">12 سؤال Output</span>
+                        <span class="px-3 py-1.5 rounded-xl bg-amber-400/20 border border-amber-300/40 text-amber-200 font-bold">80 سؤال MCQ</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 1: C# Foundation -->
+            <!-- ========================================== -->
+            <section id="sec-1" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">القسم الأول: الملخص النظري</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">1. أساسيات C# – Foundation</h2>
+                </div>
+
+                <!-- What is C# -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-5 border border-slate-200/70 dark:border-slate-700/70 space-y-3">
+                    <h3 class="text-lg font-bold text-indigo-700 dark:text-indigo-300">What is C#?</h3>
+                    <p dir="ltr" class="font-mono text-sm bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200">
+                        C# is a modern, general-purpose programming language developed by Microsoft.
+                    </p>
+                    <p class="text-sm text-slate-700 dark:text-slate-300">لغة برمجة حديثة وعامة الاستخدام طورتها شركة <strong>Microsoft</strong>. تُستخدم في:</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-semibold" dir="ltr">
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Desktop Applications</div>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Web Applications</div>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Cloud Applications</div>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Games</div>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">APIs and Services</div>
+                        <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700">Data Processing Apps</div>
+                    </div>
+                </div>
+
+                <!-- C#, .NET, WPF Table -->
+                <div>
+                    <h3 class="text-lg font-bold mb-3">العلاقة بين C#, .NET, WPF</h3>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <table class="w-full text-sm text-right">
+                            <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold">
+                                <tr>
+                                    <th class="p-3.5">المصطلح</th>
+                                    <th class="p-3.5">التعريف</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr><td class="p-3.5 font-mono font-bold text-indigo-600 dark:text-indigo-400">C#</td><td class="p-3.5">Programming Language (لغة البرمجة)</td></tr>
+                                <tr><td class="p-3.5 font-mono font-bold text-indigo-600 dark:text-indigo-400">.NET</td><td class="p-3.5">Platform, Runtime and Libraries (المنصة وبيئة التشغيل والمكتبات)</td></tr>
+                                <tr><td class="p-3.5 font-mono font-bold text-indigo-600 dark:text-indigo-400">WPF</td><td class="p-3.5">GUI Framework on .NET (إطار عمل الواجهات الرسومية)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-center font-bold text-sm text-indigo-800 dark:text-indigo-300" dir="ltr">
+                        C# + .NET + WPF &rarr; Windows Desktop Applications
+                    </div>
+                </div>
+
+                <!-- 2. Basic Program Structure -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">2. Basic Program Structure</h3>
+                    <div class="code-box relative rounded-2xl bg-slate-900 text-slate-100 p-4 overflow-x-auto">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 font-sans">نسخ</button>
+<pre class="text-xs sm:text-sm leading-relaxed"><code><span class="tok-kw">using</span> System;
+
+<span class="tok-kw">namespace</span> MyApp
+{
+    <span class="tok-kw">class</span> <span class="tok-type">Program</span>
+    {
+        <span class="tok-kw">static void</span> <span class="tok-method">Main</span>(<span class="tok-kw">string</span>[] args)
+        {
+            Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Hello World"</span>);
+        }
+    }
+}</code></pre>
+                    </div>
+                    <ul class="grid sm:grid-cols-2 gap-2 text-sm text-slate-700 dark:text-slate-300">
+                        <li class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><code class="text-indigo-600 dark:text-indigo-400 font-bold">using System;</code> استخدام مكتبات System.</li>
+                        <li class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><code class="text-indigo-600 dark:text-indigo-400 font-bold">namespace</code> تنظيم الكلاسات.</li>
+                        <li class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><code class="text-indigo-600 dark:text-indigo-400 font-bold">class Program</code> تعريف الكلاس.</li>
+                        <li class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60"><code class="text-indigo-600 dark:text-indigo-400 font-bold">static void Main()</code> نقطة بداية تنفيذ البرنامج.</li>
+                        <li class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 sm:col-span-2"><code class="text-indigo-600 dark:text-indigo-400 font-bold">Console.WriteLine()</code> طباعة النص مع سطر جديد.</li>
+                    </ul>
+                    <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs sm:text-sm text-amber-800 dark:text-amber-300 font-semibold">
+                        معلومة امتحانية: <code>Main</code> هي Entry Point، مثل <code>int main()</code> في C++.
+                    </div>
+                </div>
+
+                <!-- 3. Variables and Data Types -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">3. Variables and Data Types</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">المتغير يخزن قيمة. الصيغة العامة: <code class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">dataType variableName = value;</code></p>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <table class="w-full text-sm text-right">
+                            <thead class="bg-slate-100 dark:bg-slate-800 font-bold">
+                                <tr>
+                                    <th class="p-3">Data Type</th>
+                                    <th class="p-3">الاستخدام</th>
+                                    <th class="p-3">Example</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">int</td><td class="p-3">عدد صحيح</td><td class="p-3 font-mono">25</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">long</td><td class="p-3">عدد صحيح كبير</td><td class="p-3 font-mono">1000000L</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">double</td><td class="p-3">عدد عشري</td><td class="p-3 font-mono">3.14</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">decimal</td><td class="p-3">دقة عشرية عالية (للماليات)</td><td class="p-3 font-mono">1250.50m</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">float</td><td class="p-3">عدد عشري</td><td class="p-3 font-mono">3.14f</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">char</td><td class="p-3">حرف واحد</td><td class="p-3 font-mono">'A'</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">string</td><td class="p-3">نص</td><td class="p-3 font-mono">"Ali"</td></tr>
+                                <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">bool</td><td class="p-3">صح أو خطأ</td><td class="p-3 font-mono">true</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4 class="font-bold text-indigo-600 dark:text-indigo-400">الكلمة المفتاحية <code>var</code></h4>
+                            <p class="text-xs sm:text-sm">الـ Compiler يستنتج نوع المتغير تلقائياً من القيمة، لكنه يبقى <strong>Strongly Typed</strong> (لا يمكن تغيير نوعه لاحقاً).</p>
+                            <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs"><code><span class="tok-kw">var</span> age = <span class="tok-num">20</span>;
+age = <span class="tok-str">"Ali"</span>; <span class="tok-cmt">// Compile Error!</span></code></pre>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4 class="font-bold text-indigo-600 dark:text-indigo-400">الثوابت <code>const</code></h4>
+                            <p class="text-xs sm:text-sm">قيمة ثابتة لا يمكن تغييرها بعد تعريفها.</p>
+                            <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs"><code><span class="tok-kw">const double</span> PI = <span class="tok-num">3.14</span>;</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Input and Output -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">4. Input and Output (Parse vs TryParse)</h3>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <table class="w-full text-sm text-right">
+                            <thead class="bg-slate-100 dark:bg-slate-800 font-bold">
+                                <tr><th class="p-3">الأمر</th><th class="p-3">الوظيفة</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr><td class="p-3 font-mono text-indigo-600 dark:text-indigo-400">Console.Write()</td><td class="p-3">طباعة بدون الانتقال لسطر جديد</td></tr>
+                                <tr><td class="p-3 font-mono text-indigo-600 dark:text-indigo-400">Console.WriteLine()</td><td class="p-3">طباعة مع الانتقال لسطر جديد</td></tr>
+                                <tr><td class="p-3 font-mono text-indigo-600 dark:text-indigo-400">Console.ReadLine()</td><td class="p-3">قراءة إدخال المستخدم كنص (String دائماً)</td></tr>
+                                <tr><td class="p-3 font-mono text-indigo-600 dark:text-indigo-400">int.Parse()</td><td class="p-3">تحويل النص إلى عدد صحيح (يرمي Exception عند الخطأ)</td></tr>
+                                <tr><td class="p-3 font-mono text-indigo-600 dark:text-indigo-400">int.TryParse()</td><td class="p-3">تحويل آمن مع التحقق (يرجع Boolean: true أو false)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="code-box relative rounded-2xl bg-slate-900 text-slate-100 p-4">
+                            <span class="text-xs text-slate-400 block mb-2">// مثال Parse</span>
+<pre class="text-xs"><code>Console.<span class="tok-method">Write</span>(<span class="tok-str">"Enter age: "</span>);
+<span class="tok-kw">int</span> age = <span class="tok-kw">int</span>.<span class="tok-method">Parse</span>(Console.<span class="tok-method">ReadLine</span>());
+Console.<span class="tok-method">WriteLine</span>(age + <span class="tok-num">1</span>); <span class="tok-cmt">// إذا أدخل 20 -> الناتج 21</span></code></pre>
+                        </div>
+                        <div class="code-box relative rounded-2xl bg-slate-900 text-slate-100 p-4">
+                            <span class="text-xs text-slate-400 block mb-2">// مثال TryParse الآمن</span>
+<pre class="text-xs"><code><span class="tok-kw">if</span> (<span class="tok-kw">int</span>.<span class="tok-method">TryParse</span>(<span class="tok-str">"ABC"</span>, <span class="tok-kw">out int</span> age))
+    Console.<span class="tok-method">WriteLine</span>(age);
+<span class="tok-kw">else</span>
+    Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Invalid age"</span>); <span class="tok-cmt">// الناتج</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5 & 6. Operators, Conditions & Loops -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">5 & 6. Operators, Conditions & Loops</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                            <h4 class="font-bold mb-2">العمليات الحسابية والمنطقية</h4>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                الحسابية: <code class="font-bold">+ , - , * , / , %</code> (باقي القسمة)<br>
+                                المقارنة: <code class="font-bold">== , != , > , < , >= , <=</code><br>
+                                المنطقية: <code class="font-bold">&&</code> (AND) , <code class="font-bold">||</code> (OR) , <code class="font-bold">!</code> (NOT)
+                            </p>
+                            <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-3"><code><span class="tok-kw">int</span> age = <span class="tok-num">20</span>;
+<span class="tok-kw">if</span> (age >= <span class="tok-num">18</span>) Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Adult"</span>);
+<span class="tok-kw">else</span> Console.<span class="tok-method">WriteLine</span>(<span class="tok-str">"Child"</span>);
+<span class="tok-cmt">// الناتج: Adult</span></code></pre>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                            <h4 class="font-bold mb-2">الحلقات التكرارية (Loops)</h4>
+                            <ul class="text-xs space-y-1.5 text-slate-700 dark:text-slate-300">
+                                <li><code class="font-bold text-indigo-600 dark:text-indigo-400">for</code>: تكرار بعدد أو شرط محدد.</li>
+                                <li><code class="font-bold text-indigo-600 dark:text-indigo-400">while</code>: تكرار ما دام الشرط صحيحاً.</li>
+                                <li><code class="font-bold text-indigo-600 dark:text-indigo-400">do while</code>: ينفذ مرة واحدة على الأقل قبل فحص الشرط.</li>
+                                <li><code class="font-bold text-indigo-600 dark:text-indigo-400">foreach</code>: المرور على عناصر المجموعة أو المصفوفة.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7 & 8. Arrays, Methods, OOP, Exception Handling, CLR -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">7 & 8. Arrays, Methods, OOP & .NET Essentials</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4">
+                            <span class="text-xs text-indigo-400 font-bold block mb-2">// Arrays & Methods</span>
+<pre class="text-xs leading-relaxed"><code><span class="tok-kw">int</span>[] marks = { <span class="tok-num">70</span>, <span class="tok-num">80</span>, <span class="tok-num">90</span>, <span class="tok-num">85</span> };
+Console.<span class="tok-method">WriteLine</span>(marks[<span class="tok-num">0</span>]); <span class="tok-cmt">// 70 (يبدأ من 0)</span>
+
+<span class="tok-kw">static int</span> <span class="tok-method">Add</span>(<span class="tok-kw">int</span> a, <span class="tok-kw">int</span> b) => a + b;
+Console.<span class="tok-method">WriteLine</span>(<span class="tok-method">Add</span>(<span class="tok-num">5</span>, <span class="tok-num">3</span>)); <span class="tok-cmt">// 8</span></code></pre>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4">
+                            <span class="text-xs text-indigo-400 font-bold block mb-2">// OOP: Class, Property, Constructor</span>
+<pre class="text-xs leading-relaxed"><code><span class="tok-kw">class</span> <span class="tok-type">Student</span> {
+    <span class="tok-kw">public string</span> Name { <span class="tok-kw">get</span>; <span class="tok-kw">set</span>; }
+    <span class="tok-kw">public</span> <span class="tok-method">Student</span>(<span class="tok-kw">string</span> name) { Name = name; }
+}
+<span class="tok-type">Student</span> s = <span class="tok-kw">new</span> <span class="tok-type">Student</span>(<span class="tok-str">"Ali"</span>);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                            <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">Access Modifiers</strong>
+                            <code>public</code> (متاح للكل)، <code>private</code> (داخل الكلاس فقط)، <code>protected</code> (الكلاس والمشتقة)، <code>internal</code> (نفس Assembly).
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                            <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">Exception Handling</strong>
+                            <code>try</code> (كود قد يخطئ)، <code>catch</code> (معالجة الخطأ)، <code>finally</code> (ينفذ دائماً بعد الانتهاء).
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                            <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">Project & CLR</strong>
+                            <code>.cs</code> كود، <code>.csproj</code> إعدادات، <code>.exe/.dll</code> تجميعات. الـ <strong>CLR</strong> يدير التشغيل و <strong>Garbage Collection</strong> يحرر الذاكرة.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 2: Week 5 – Event-Driven Programming -->
+            <!-- ========================================== -->
+            <section id="sec-2" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">القسم الثاني</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Week 5 – Event-Driven Programming</h2>
+                </div>
+
+                <!-- Console vs GUI -->
+                <div>
+                    <h3 class="text-lg font-bold mb-3">1. الفرق بين Console و GUI</h3>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <table class="w-full text-sm text-right">
+                            <thead class="bg-slate-100 dark:bg-slate-800 font-bold">
+                                <tr><th class="p-3.5">Console Application</th><th class="p-3.5">GUI Application (WPF)</th></tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                <tr><td class="p-3.5">Linear Flow (تسلسل خطي)</td><td class="p-3.5">Event-Driven (معتمد على الأحداث)</td></tr>
+                                <tr><td class="p-3.5">البرنامج يحدد الترتيب</td><td class="p-3.5">المستخدم يحدد الترتيب</td></tr>
+                                <tr><td class="p-3.5">ReadLine لقراءة الإدخال</td><td class="p-3.5">Controls تستقبل الإدخال</td></tr>
+                                <tr><td class="p-3.5">ينتهي عند انتهاء Main</td><td class="p-3.5">يستمر حتى إغلاق النافذة</td></tr>
+                                <tr><td class="p-3.5">Output نصي</td><td class="p-3.5">Output داخل Controls</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Definitions & IoC -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 space-y-2">
+                        <h3 class="font-bold text-indigo-800 dark:text-indigo-300">2. Event-Driven & Inversion of Control (IoC)</h3>
+                        <p dir="ltr" class="text-xs font-mono bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-indigo-100 dark:border-indigo-900">
+                            In an event-driven program, the flow is determined by events.
+                        </p>
+                        <ul class="text-xs sm:text-sm space-y-1.5 text-slate-700 dark:text-slate-300 pt-1">
+                            <li><strong>Console:</strong> Your Code calls the Library.</li>
+                            <li><strong>GUI (IoC):</strong> The Framework calls your Code.</li>
+                            <li>مثال: <code class="font-mono text-indigo-600 dark:text-indigo-400">button.Click += OnClick;</code> هنا نسجل الدالة فقط ولا نستدعيها.</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+                        <h3 class="font-bold">3. أهم تعاريف الأحداث</h3>
+                        <ul class="text-xs space-y-1.5">
+                            <li><strong class="text-indigo-600 dark:text-indigo-400">Event:</strong> Something that happened.</li>
+                            <li><strong class="text-indigo-600 dark:text-indigo-400">Event Source / Sender:</strong> The object that raised/caused the event.</li>
+                            <li><strong class="text-indigo-600 dark:text-indigo-400">Event Data:</strong> Details about the event (<code>e</code>).</li>
+                            <li><strong class="text-indigo-600 dark:text-indigo-400">Event Handler:</strong> Code that runs in response.</li>
+                            <li><strong class="text-indigo-600 dark:text-indigo-400">Subscription:</strong> Linking a handler to an event.</li>
+                            <li><strong class="text-indigo-600 dark:text-indigo-400">Event Loop:</strong> Waits for events and dispatches them.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Event Categories & Rules -->
+                <div class="grid md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold mb-2 text-indigo-600 dark:text-indigo-400">5. أنواع الأحداث (Categories)</h4>
+                        <ul class="space-y-1 text-slate-700 dark:text-slate-300">
+                            <li><strong>User Input:</strong> Click, KeyDown, MouseMove</li>
+                            <li><strong>Text Events:</strong> TextChanged</li>
+                            <li><strong>Selection:</strong> SelectionChanged</li>
+                            <li><strong>Window:</strong> Loaded, Closing, Closed</li>
+                            <li><strong>Time:</strong> DispatcherTimer Tick</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <h4 class="font-bold mb-2 text-emerald-600 dark:text-emerald-400">6. قواعد كتابة Event Handler</h4>
+                        <ul class="space-y-1 text-slate-700 dark:text-slate-300">
+                            <li>Keep handlers short (اجعلها قصيرة).</li>
+                            <li>Validate input first (تحقق من المدخلات أولاً).</li>
+                            <li>One handler, one job (مهمة واحدة لكل معالج).</li>
+                            <li>Reuse handlers instead of copying them.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 3: Week 6 – Events & Event Handlers -->
+            <!-- ========================================== -->
+            <section id="sec-3" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">القسم الثالث – مهم جداً للعملي</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Week 6 – Events, Event Handlers & Delegates</h2>
+                </div>
+
+                <!-- Program 1: Button Click -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">1 & 2. أول برنامج Button Click (XAML + C#)</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
+                            <span class="text-xs font-bold text-amber-400 block mb-2">XAML (XML)</span>
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
+<pre class="text-xs leading-relaxed"><code>&lt;<span class="tok-tag">StackPanel</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"15"</span>&gt;
+    &lt;<span class="tok-tag">Button</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Click me"</span>
+            <span class="tok-attr">Click</span>=<span class="tok-str">"Hello_Click"</span> /&gt;
+    &lt;<span class="tok-tag">TextBlock</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"lblOut"</span> /&gt;
+&lt;/<span class="tok-tag">StackPanel</span>&gt;</code></pre>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
+                            <span class="text-xs font-bold text-sky-400 block mb-2">C# Handler</span>
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
+<pre class="text-xs leading-relaxed"><code><span class="tok-kw">int</span> clicks = <span class="tok-num">0</span>;
+
+<span class="tok-kw">private void</span> <span class="tok-method">Hello_Click</span>(<span class="tok-kw">object</span> sender, <span class="tok-type">RoutedEventArgs</span> e)
+{
+    clicks++;
+    lblOut.Text = <span class="tok-str">$"Clicked {clicks} times"</span>;
+}
+<span class="tok-cmt">// الناتج: Clicked 1 times ثم 2 ثم 3...</span></code></pre>
+                        </div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-xs sm:text-sm text-rose-800 dark:text-rose-300">
+                        <strong>خطأ امتحاني مهم:</strong> يمكنك ربط الحدث إما في XAML (<code dir="ltr">Click="BtnSave_Click"</code>) أو في C# (<code dir="ltr">btnSave.Click += BtnSave_Click;</code>). <strong>لا تستخدم الطريقتين معاً</strong> لنفس الحدث؛ لأن الدالة ستعمل مرتين عند الضغط!
+                    </div>
+                </div>
+
+                <!-- 4. Delegates -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">4. Delegates (Action, Func, EventHandler)</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                        <strong>Delegate:</strong> <span dir="ltr" class="font-mono text-indigo-600 dark:text-indigo-400">A type-safe reference to a method.</span> (متغير يخزن مرجعاً لدالة).
+                    </p>
+                    <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                            <span class="font-mono font-bold text-base text-indigo-600 dark:text-indigo-400">Action</span>
+                            <p class="mt-1 font-semibold">Returns Nothing (void)</p>
+                            <code dir="ltr" class="block mt-2 text-[11px] bg-slate-900 text-slate-200 p-2 rounded-lg">Action&lt;string&gt; show = SayHello;</code>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                            <span class="font-mono font-bold text-base text-emerald-600 dark:text-emerald-400">Func</span>
+                            <p class="mt-1 font-semibold">Returns a Value (آخر نوع هو الإرجاع)</p>
+                            <code dir="ltr" class="block mt-2 text-[11px] bg-slate-900 text-slate-200 p-2 rounded-lg">Func&lt;int, int, int&gt; add = (a,b) =&gt; a+b;</code>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                            <span class="font-mono font-bold text-base text-amber-600 dark:text-amber-400">EventHandler</span>
+                            <p class="mt-1 font-semibold">Used for Events</p>
+                            <code dir="ltr" class="block mt-2 text-[11px] bg-slate-900 text-slate-200 p-2 rounded-lg">void H(object s, EventArgs e)</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. ComboBox + Button + Handler -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">5. برنامج ComboBox + Button + Delegate (مهم جداً)</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
+                            <span class="text-xs font-bold text-amber-400 block mb-2">XAML</span>
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
+<pre class="text-xs leading-relaxed"><code>&lt;<span class="tok-tag">StackPanel</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"15"</span>&gt;
+    &lt;<span class="tok-tag">TextBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"txtName"</span> <span class="tok-attr">Width</span>=<span class="tok-str">"200"</span> /&gt;
+    &lt;<span class="tok-tag">ComboBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"cmbLang"</span>
+              <span class="tok-attr">SelectedIndex</span>=<span class="tok-str">"0"</span>
+              <span class="tok-attr">SelectionChanged</span>=<span class="tok-str">"Lang_Changed"</span>&gt;
+        &lt;<span class="tok-tag">ComboBoxItem</span> <span class="tok-attr">Content</span>=<span class="tok-str">"English"</span> /&gt;
+        &lt;<span class="tok-tag">ComboBoxItem</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Spanish"</span> /&gt;
+    &lt;/<span class="tok-tag">ComboBox</span>&gt;
+    &lt;<span class="tok-tag">Button</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Greet"</span> <span class="tok-attr">Click</span>=<span class="tok-str">"Greet_Click"</span> /&gt;
+    &lt;<span class="tok-tag">TextBlock</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"lblOut"</span> /&gt;
+&lt;/<span class="tok-tag">StackPanel</span>&gt;</code></pre>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
+                            <span class="text-xs font-bold text-sky-400 block mb-2">C# Code-Behind</span>
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
+<pre class="text-xs leading-relaxed"><code><span class="tok-type">Func</span>&lt;<span class="tok-kw">string</span>, <span class="tok-kw">string</span>&gt; greeter = English;
+
+<span class="tok-kw">static string</span> <span class="tok-method">English</span>(<span class="tok-kw">string</span> n) =&gt; <span class="tok-str">$"Hello, {n}!"</span>;
+<span class="tok-kw">static string</span> <span class="tok-method">Spanish</span>(<span class="tok-kw">string</span> n) =&gt; <span class="tok-str">$"Hola, {n}!"</span>;
+
+<span class="tok-kw">private void</span> <span class="tok-method">Lang_Changed</span>(<span class="tok-kw">object</span> sender, <span class="tok-type">SelectionChangedEventArgs</span> e)
+{
+    greeter = cmbLang.SelectedIndex == <span class="tok-num">1</span> ? Spanish : English;
+}
+
+<span class="tok-kw">private void</span> <span class="tok-method">Greet_Click</span>(<span class="tok-kw">object</span> sender, <span class="tok-type">RoutedEventArgs</span> e)
+{
+    lblOut.Text = <span class="tok-method">greeter</span>(txtName.Text);
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 4: Week 7 – Events and Routed Events -->
+            <!-- ========================================== -->
+            <section id="sec-4" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">القسم الرابع</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Week 7 – Publisher/Subscriber & Routed Events</h2>
+                </div>
+
+                <!-- Publisher vs Subscribers -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-indigo-600 dark:text-indigo-400 mb-2">Publisher (الناشر)</h3>
+                        <ul class="text-xs sm:text-sm space-y-1">
+                            <li>• Declares the event (يُصرّح بالحدث).</li>
+                            <li>• Raises the event (يُطلق الحدث وحده).</li>
+                            <li>• لا يعرف من يستمع إليه.</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2">Subscribers (المشتركون)</h3>
+                        <ul class="text-xs sm:text-sm space-y-1">
+                            <li>• Add themselves using <code class="font-bold">+=</code></li>
+                            <li>• Remove themselves using <code class="font-bold">-=</code></li>
+                            <li>• الكود الخارجي يستخدم <code>+=</code> و <code>-=</code> فقط.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Counter Publisher & Subscribers Code -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">3 & 4. برنامج Counter (Publisher & Subscribers)</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
+                            <span class="text-xs font-bold text-emerald-400 block mb-2">Counter Class (Publisher)</span>
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
+<pre class="text-xs leading-relaxed"><code><span class="tok-kw">public class</span> <span class="tok-type">Counter</span>
+{
+    <span class="tok-kw">public int</span> Value { <span class="tok-kw">get</span>; <span class="tok-kw">private set</span>; }
+    <span class="tok-kw">public event</span> <span class="tok-type">EventHandler</span>&lt;<span class="tok-kw">int</span>&gt;? ValueChanged;
+
+    <span class="tok-kw">public void</span> <span class="tok-method">Increment</span>()
+    {
+        Value++;
+        ValueChanged?.<span class="tok-method">Invoke</span>(<span class="tok-kw">this</span>, Value);
+    }
+}</code></pre>
+                        </div>
+                        <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative">
+                            <span class="text-xs font-bold text-sky-400 block mb-2">MainWindow (Subscribers)</span>
+                            <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2 py-1 rounded bg-slate-800 text-xs text-slate-300">نسخ</button>
+<pre class="text-xs leading-relaxed"><code><span class="tok-type">Counter</span> counter = <span class="tok-kw">new</span> <span class="tok-type">Counter</span>();
+
+<span class="tok-kw">public</span> <span class="tok-method">MainWindow</span>() {
+    <span class="tok-method">InitializeComponent</span>();
+    counter.ValueChanged += ShowCount;
+    counter.ValueChanged += MoveBar;
+}
+<span class="tok-kw">void</span> <span class="tok-method">ShowCount</span>(<span class="tok-kw">object</span> s, <span class="tok-kw">int</span> v) =&gt; lblCount.Text = <span class="tok-str">$"Count: {v}"</span>;
+<span class="tok-kw">void</span> <span class="tok-method">MoveBar</span>(<span class="tok-kw">object</span> s, <span class="tok-kw">int</span> v) =&gt; bar.Value = v;
+<span class="tok-kw">void</span> <span class="tok-method">Add_Click</span>(<span class="tok-kw">object</span> s, <span class="tok-type">RoutedEventArgs</span> e) =&gt; counter.<span class="tok-method">Increment</span>();</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Routed Events Diagram & Comparison -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">7. Routed Events (Bubbling, Tunneling, Direct)</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                        <span dir="ltr" class="font-mono text-indigo-600 dark:text-indigo-400">Routed Events are events that travel through the element tree.</span>
+                    </p>
+
+                    <!-- Visual SVG Diagram for Routed Events -->
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 text-center">
+                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-indigo-600 text-white text-xs font-bold mb-2">1. Bubbling (يصعد)</span>
+                            <div class="text-xs font-mono space-y-1.5 my-2" dir="ltr">
+                                <div class="p-1.5 rounded bg-white dark:bg-slate-800 border">Window (3)</div>
+                                <div class="text-indigo-600 font-bold">&uarr;</div>
+                                <div class="p-1.5 rounded bg-white dark:bg-slate-800 border">StackPanel (2)</div>
+                                <div class="text-indigo-600 font-bold">&uarr;</div>
+                                <div class="p-1.5 rounded bg-indigo-600 text-white font-bold">Button Source (1)</div>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Source &rarr; Parent &rarr; Window<br>مثال: <code>Click</code></p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 text-center">
+                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-purple-600 text-white text-xs font-bold mb-2">2. Tunneling (ينزل)</span>
+                            <div class="text-xs font-mono space-y-1.5 my-2" dir="ltr">
+                                <div class="p-1.5 rounded bg-purple-600 text-white font-bold">Window (1)</div>
+                                <div class="text-purple-600 font-bold">&darr;</div>
+                                <div class="p-1.5 rounded bg-white dark:bg-slate-800 border">StackPanel (2)</div>
+                                <div class="text-purple-600 font-bold">&darr;</div>
+                                <div class="p-1.5 rounded bg-white dark:bg-slate-800 border">Button Source (3)</div>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">Window &rarr; Source<br>يبدأ بـ <code>Preview</code> مثل <code>PreviewKeyDown</code></p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-center">
+                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-xs font-bold mb-2">3. Direct (مباشر)</span>
+                            <div class="text-xs font-mono space-y-1.5 my-2" dir="ltr">
+                                <div class="p-1.5 rounded bg-white dark:bg-slate-800 border opacity-50">Window</div>
+                                <div class="text-slate-400">&times;</div>
+                                <div class="p-1.5 rounded bg-white dark:bg-slate-800 border opacity-50">StackPanel</div>
+                                <div class="text-slate-400">&times;</div>
+                                <div class="p-1.5 rounded bg-emerald-600 text-white font-bold">Source Only (1)</div>
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-400">يحدث على العنصر نفسه فقط<br>مثال: <code>Loaded</code></p>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs sm:text-sm">
+                        <strong>sender vs e.Source:</strong><br>
+                        • <code class="font-bold">sender</code>: العنصر الذي تم ربط الـ Handler به (مثلاً <code>StackPanel</code>).<br>
+                        • <code class="font-bold">e.Source</code>: العنصر الأصلي الذي أطلق الحدث فعلياً (مثلاً <code>Button</code>).<br>
+                        • <code class="font-bold">e.Handled = true;</code> توقف استمرار توجيه الحدث.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 5: Week 8 – Layout and XML (1-17) -->
+            <!-- ========================================== -->
+            <section id="sec-5" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4 flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">القسم الخامس</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Week 8 – Layout and XML (الصفحات 1–17 فقط)</h2>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-bold">مقيد بالصفحات 1–17</span>
+                </div>
+
+                <!-- Containers Summary -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 text-sm block mb-1">DockPanel</strong>
+                        يثبت العناصر في Top, Bottom, Left, Right. آخر عنصر يملأ المساحة المتبقية افتراضياً (<code>LastChildFill="True"</code>).
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 text-sm block mb-1">Grid</strong>
+                        ينظم العناصر بصفوف (Rows) وأعمدة (Columns). يدعم <code>Auto</code> (حجم المحتوى) و <code>*</code> (المساحة المتبقية النسبية).
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 text-sm block mb-1">StackPanel</strong>
+                        يرتب العناصر عمودياً (<code>Vertical</code>) أو أفقياً (<code>Horizontal</code>).
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 text-sm block mb-1">GroupBox</strong>
+                        يجمع العناصر داخل إطار بعنوان (<code>Header</code>). يحتوي Child واحداً مباشراً (نضع داخله Grid).
+                    </div>
+                </div>
+
+                <!-- Margin vs Padding -->
+                <div class="p-4 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+                    <div>
+                        <strong class="text-indigo-700 dark:text-indigo-300">Margin vs Padding:</strong>
+                        <p class="mt-1">• <strong>Margin:</strong> Space Outside (المسافة خارج العنصر). ترتيب 4 أرقام: <code dir="ltr">Left, Top, Right, Bottom</code>.</p>
+                        <p>• <strong>Padding:</strong> Space Inside (المسافة داخل العنصر).</p>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-800 font-mono text-xs" dir="ltr">
+                        &lt;Button Content="Save" Margin="10" Padding="15" /&gt;
+                    </div>
+                </div>
+
+                <!-- MediBook XAML Example -->
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold">7. بناء واجهة MediBook (أهم مثال تطبيقي)</h3>
+                    <div class="rounded-2xl bg-slate-900 text-slate-100 p-4 relative overflow-x-auto">
+                        <button onclick="copyCode(this)" class="copy-btn absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300">نسخ XAML</button>
+<pre class="text-xs leading-relaxed"><code>&lt;<span class="tok-tag">Window</span> <span class="tok-attr">x:Class</span>=<span class="tok-str">"MediBook.MainWindow"</span> <span class="tok-attr">Title</span>=<span class="tok-str">"MediBook"</span> <span class="tok-attr">Height</span>=<span class="tok-str">"460"</span> <span class="tok-attr">Width</span>=<span class="tok-str">"720"</span>&gt;
+    &lt;<span class="tok-tag">DockPanel</span>&gt;
+        &lt;<span class="tok-tag">Menu</span> <span class="tok-attr">DockPanel.Dock</span>=<span class="tok-str">"Top"</span>&gt;
+            &lt;<span class="tok-tag">MenuItem</span> <span class="tok-attr">Header</span>=<span class="tok-str">"File"</span> /&gt;
+            &lt;<span class="tok-tag">MenuItem</span> <span class="tok-attr">Header</span>=<span class="tok-str">"Help"</span> /&gt;
+        &lt;/<span class="tok-tag">Menu</span>&gt;
+        &lt;<span class="tok-tag">StatusBar</span> <span class="tok-attr">DockPanel.Dock</span>=<span class="tok-str">"Bottom"</span>&gt;
+            &lt;<span class="tok-tag">TextBlock</span> <span class="tok-attr">Text</span>=<span class="tok-str">"Ready"</span> /&gt;
+        &lt;/<span class="tok-tag">StatusBar</span>&gt;
+
+        &lt;<span class="tok-tag">Grid</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"10"</span>&gt;
+            &lt;<span class="tok-tag">Grid.ColumnDefinitions</span>&gt;
+                &lt;<span class="tok-tag">ColumnDefinition</span> <span class="tok-attr">Width</span>=<span class="tok-str">"3*"</span> /&gt;
+                &lt;<span class="tok-tag">ColumnDefinition</span> <span class="tok-attr">Width</span>=<span class="tok-str">"2*"</span> /&gt;
+            &lt;/<span class="tok-tag">Grid.ColumnDefinitions</span>&gt;
+
+            &lt;<span class="tok-tag">GroupBox</span> <span class="tok-attr">Header</span>=<span class="tok-str">"New Appointment"</span> <span class="tok-attr">Grid.Column</span>=<span class="tok-str">"0"</span>&gt;
+                &lt;<span class="tok-tag">Grid</span> <span class="tok-attr">Margin</span>=<span class="tok-str">"8"</span>&gt;
+                    &lt;<span class="tok-tag">Grid.ColumnDefinitions</span>&gt;
+                        &lt;<span class="tok-tag">ColumnDefinition</span> <span class="tok-attr">Width</span>=<span class="tok-str">"Auto"</span> /&gt;
+                        &lt;<span class="tok-tag">ColumnDefinition</span> <span class="tok-attr">Width</span>=<span class="tok-str">"*"</span> /&gt;
+                    &lt;/<span class="tok-tag">Grid.ColumnDefinitions</span>&gt;
+                    &lt;<span class="tok-tag">Grid.RowDefinitions</span>&gt;
+                        &lt;<span class="tok-tag">RowDefinition</span> <span class="tok-attr">Height</span>=<span class="tok-str">"Auto"</span> /&gt;
+                        &lt;<span class="tok-tag">RowDefinition</span> <span class="tok-attr">Height</span>=<span class="tok-str">"Auto"</span> /&gt;
+                        &lt;<span class="tok-tag">RowDefinition</span> <span class="tok-attr">Height</span>=<span class="tok-str">"Auto"</span> /&gt;
+                    &lt;/<span class="tok-tag">Grid.RowDefinitions</span>&gt;
+
+                    &lt;<span class="tok-tag">Label</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Patient:"</span> <span class="tok-attr">Grid.Row</span>=<span class="tok-str">"0"</span> /&gt;
+                    &lt;<span class="tok-tag">TextBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"txtName"</span> <span class="tok-attr">Grid.Row</span>=<span class="tok-str">"0"</span> <span class="tok-attr">Grid.Column</span>=<span class="tok-str">"1"</span> /&gt;
+
+                    &lt;<span class="tok-tag">Label</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Phone:"</span> <span class="tok-attr">Grid.Row</span>=<span class="tok-str">"1"</span> /&gt;
+                    &lt;<span class="tok-tag">TextBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"txtPhone"</span> <span class="tok-attr">Grid.Row</span>=<span class="tok-str">"1"</span> <span class="tok-attr">Grid.Column</span>=<span class="tok-str">"1"</span> <span class="tok-attr">MaxLength</span>=<span class="tok-str">"11"</span> /&gt;
+
+                    &lt;<span class="tok-tag">Label</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Doctor:"</span> <span class="tok-attr">Grid.Row</span>=<span class="tok-str">"2"</span> /&gt;
+                    &lt;<span class="tok-tag">ComboBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"cmbDoctor"</span> <span class="tok-attr">Grid.Row</span>=<span class="tok-str">"2"</span> <span class="tok-attr">Grid.Column</span>=<span class="tok-str">"1"</span>&gt;
+                        &lt;<span class="tok-tag">ComboBoxItem</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Dr. Ahmed"</span> <span class="tok-attr">Tag</span>=<span class="tok-str">"Cardiology"</span> /&gt;
+                        &lt;<span class="tok-tag">ComboBoxItem</span> <span class="tok-attr">Content</span>=<span class="tok-str">"Dr. Sara"</span> <span class="tok-attr">Tag</span>=<span class="tok-str">"Dermatology"</span> /&gt;
+                    &lt;/<span class="tok-tag">ComboBox</span>&gt;
+                &lt;/<span class="tok-tag">Grid</span>&gt;
+            &lt;/<span class="tok-tag">GroupBox</span>&gt;
+
+            &lt;<span class="tok-tag">GroupBox</span> <span class="tok-attr">Header</span>=<span class="tok-str">"Booked Today"</span> <span class="tok-attr">Grid.Column</span>=<span class="tok-str">"1"</span>&gt;
+                &lt;<span class="tok-tag">ListBox</span> <span class="tok-attr">x:Name</span>=<span class="tok-str">"lstBooked"</span> /&gt;
+            &lt;/<span class="tok-tag">GroupBox</span>&gt;
+        &lt;/<span class="tok-tag">Grid</span>&gt;
+    &lt;/<span class="tok-tag">DockPanel</span>&gt;
+&lt;/<span class="tok-tag">Window</span>&gt;</code></pre>
+                    </div>
+                </div>
+
+                <!-- New Controls in Week 8 -->
+                <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">ComboBox & Tag</strong>
+                        <code>Content</code> يعرض النص للمستخدم (مثل اسم الطبيب)، أما <code>Tag</code> فيحمل بيانات إضافية مخفية (مثل التخصص).
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">DatePicker</strong>
+                        قراءة التاريخ عبر <code dir="ltr">DateTime? d = dpDate.SelectedDate;</code> حيث <code>DateTime?</code> يقبل قيمة أو <code>null</code>.
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <strong class="text-indigo-600 dark:text-indigo-400 block mb-1">Multi-line TextBox</strong>
+                        <code>AcceptsReturn="True"</code> للسماح بـ Enter، و <code>TextWrapping="Wrap"</code> لالتفاف النص، و <code>MaxLength</code> لتحديد الطول.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 6: Debugging & Error Correction -->
+            <!-- ========================================== -->
+            <section id="sec-6" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">القسم السادس</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">برامج الأخطاء البرمجية وتصحيحها (10 حالات شائعة)</h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 text-xs">
+                    <!-- Error 1 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">1. خطأ نوع البيانات</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">Compile Error</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>int age = "20"; // خطأ: نص داخل int</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>int age = 20;   // التصحيح</code></pre>
+                    </div>
+                    <!-- Error 2 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">2. خطأ Parse</span><span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">FormatException</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>int age = int.Parse("ABC"); // يرمي Exception</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>int.TryParse("ABC", out int age); // آمن</code></pre>
+                    </div>
+                    <!-- Error 3 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">3. خطأ var</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">Compile Error</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>var number = 10; number = "Ali";</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>string number = "Ali";</code></pre>
+                    </div>
+                    <!-- Error 4 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">4. خطأ Array Index</span><span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">IndexOutOfRange</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>int[] nums = {10, 20, 30}; nums[3];</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>Console.WriteLine(nums[2]); // آخر فهرس 2</code></pre>
+                    </div>
+                    <!-- Error 5 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">5. عدم تطابق اسم Handler</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">XAML Error</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Click="Hello_Click" vs void HelloClick(...)</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>توحيد الاسم في XAML و C# إلى Hello_Click</code></pre>
+                    </div>
+                    <!-- Error 6 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">6. تشغيل Handler مرتين</span><span class="px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">Logical Bug</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>ربط Click في XAML وأيضاً += في C#</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>حذف أحد التسجيلين والاكتفاء بواحد فقط</code></pre>
+                    </div>
+                    <!-- Error 7 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">7. إطلاق Event بدون مشتركين</span><span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">NullReference</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Changed.Invoke(this, EventArgs.Empty);</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>Changed?.Invoke(this, EventArgs.Empty);</code></pre>
+                    </div>
+                    <!-- Error 8 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">8. عدم ربط Handler</span><span class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700">Nothing Happens</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>&lt;Button Content="Click" /&gt; // بدون Click=</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>&lt;Button Content="Click" Click="Button_Click" /&gt;</code></pre>
+                    </div>
+                    <!-- Error 9 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">9. ترتيب الأعمدة في Grid</span><span class="px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700">Layout Bug</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Grid.Column="2" بدون تعريف ColumnDefinitions</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>تعريف 3 أعمدة داخل Grid.ColumnDefinitions</code></pre>
+                    </div>
+                    <!-- Error 10 -->
+                    <div class="p-4 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                        <div class="flex justify-between font-bold"><span class="text-rose-600">10. تجمد الواجهة (Freeze)</span><span class="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">UI Thread</span></div>
+                        <pre class="bg-slate-900 text-rose-300 p-2.5 rounded-lg"><code>Thread.Sleep(10000); داخل Button_Click</code></pre>
+                        <pre class="bg-slate-900 text-emerald-300 p-2.5 rounded-lg"><code>تجنب العمليات الطويلة المتزامنة على UI Thread</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 7: Interactive Output Quiz (12 Qs) -->
+            <!-- ========================================== -->
+            <section id="sec-7" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">القسم السابع</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">أسئلة نواتج الأكواد (Output)</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">حاول حل الأسئلة ذهنياً قبل الضغط على زر إظهار الناتج</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="output-counter" class="px-3 py-1.5 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-xs font-bold">0 / 12 محلول</span>
+                        <button onclick="toggleAllOutputs(true)" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">إظهار جميع النتائج</button>
+                        <button onclick="toggleAllOutputs(false)" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition">إخفاء الكل</button>
+                    </div>
+                </div>
+
+                <div id="output-grid" class="grid md:grid-cols-2 gap-4"></div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 8: Comparisons & Definitions -->
+            <!-- ========================================== -->
+            <section id="sec-8" class="searchable-section bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">القسم الثامن</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">أهم المقارنات والتعاريف للحفظ</h2>
+                </div>
+
+                <!-- Comparisons Table -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <table class="w-full text-sm text-right">
+                        <thead class="bg-slate-100 dark:bg-slate-800 font-bold">
+                            <tr><th class="p-3">المقارنة</th><th class="p-3">الفرق الجوهري</th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-700 text-xs sm:text-sm">
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Write / WriteLine</td><td class="p-3">بدون سطر جديد / مع سطر جديد</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Parse / TryParse</td><td class="p-3">تحويل مع Exception عند الفشل / تحويل آمن يرجع Boolean</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Class / Object</td><td class="p-3">قالب (Blueprint) / نسخة (Instance)</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">get / set</td><td class="p-3">قراءة القيمة / تغيير القيمة</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Action / Func</td><td class="p-3">Delegate بدون قيمة راجعة / Delegate يرجع قيمة</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">+= / -=</td><td class="p-3">إضافة اشتراك (Subscribe) / إزالة اشتراك (Unsubscribe)</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">sender / e.Source</td><td class="p-3">العنصر المربوط به Handler / العنصر الأصلي مصدر الحدث</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Bubbling / Tunneling</td><td class="p-3">يصعد من الابن للأب / ينزل من الأب للابن</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Grid / StackPanel</td><td class="p-3">تنظيم بصفوف وأعمدة / ترتيب خطي أفقي أو عمودي</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">DockPanel / Grid</td><td class="p-3">تثبيت العناصر حسب الاتجاه (Top/Bottom..) / صفوف وأعمدة</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Margin / Padding</td><td class="p-3">مسافة خارج العنصر / مسافة داخل العنصر</td></tr>
+                            <tr><td class="p-3 font-mono font-bold text-indigo-600 dark:text-indigo-400">Auto / *</td><td class="p-3">يأخذ حجم المحتوى فقط / يتقاسم المساحة المتبقية</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- English Definitions Grid -->
+                <div>
+                    <h3 class="text-lg font-bold mb-3">تعاريف مهمة جداً للحفظ باللغة الإنجليزية</h3>
+                    <div class="grid sm:grid-cols-2 gap-2.5 text-xs" dir="ltr">
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">C#:</strong> A modern general-purpose programming language developed by Microsoft.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Variable:</strong> A named storage location for a value.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Array:</strong> A collection of elements of the same type.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Class:</strong> A blueprint for creating objects.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Object:</strong> An instance of a class.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Constructor:</strong> A special method that runs automatically when an object is created.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Delegate:</strong> A type-safe reference to a method.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Event:</strong> Something that happened.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Event Source:</strong> The object that raised an event.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Event Handler:</strong> Code that runs in response to an event.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Subscription:</strong> Linking a handler to an event.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Event Loop:</strong> Waits for events and dispatches them.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Publisher:</strong> Declares and raises an event.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Subscriber:</strong> Registers a handler to respond to an event.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Routed Event:</strong> An event that travels through the element tree.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Bubbling:</strong> An event travels from source to parent.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Tunneling:</strong> An event travels from parent to source.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">Direct:</strong> An event occurs only on its source.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">WPF:</strong> Windows Presentation Foundation.</div>
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700"><strong class="text-indigo-600 dark:text-indigo-400">CLR:</strong> Common Language Runtime.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- SECTION 9: Comprehensive 80 MCQ Exam -->
+            <!-- ========================================== -->
+            <section id="sec-9" class="bg-white dark:bg-slate-900 rounded-3xl border-2 border-indigo-500/30 dark:border-indigo-500/40 p-6 sm:p-8 shadow-md space-y-6">
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-5">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold">القسم التاسع – الاختبار التفاعلي</span>
+                            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-2">اختبار MCQ الشامل (80 سؤالاً)</h2>
+                            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                                يشمل جميع المواضيع: C# Foundation، Weeks 5, 6, 7، و Week 8 حتى الصفحة 17 فقط.
+                            </p>
+                        </div>
+
+                        <!-- Live Progress Badge -->
+                        <div class="bg-slate-100 dark:bg-slate-800 px-4 py-3 rounded-2xl text-center min-w-[140px]">
+                            <div id="mcq-progress-text" class="text-lg font-extrabold text-indigo-600 dark:text-indigo-400">0 / 80 مجاب</div>
+                            <div class="w-full bg-slate-300 dark:bg-slate-700 h-2 rounded-full mt-1.5 overflow-hidden">
+                                <div id="mcq-progress-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Result Banner (Hidden until graded) -->
+                    <div id="exam-result-banner" class="hidden mt-5 p-5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-xl font-extrabold" id="exam-score-title">نتيجتك النهائية: 0 / 80</h3>
+                                <p class="text-sm text-indigo-100 mt-1" id="exam-score-subtitle">تم تلوين الإجابات الصحيحة بالأخضر والخاطئة بالأحمر.</p>
+                            </div>
+                            <button onclick="resetExam()" class="px-4 py-2 rounded-xl bg-white text-indigo-700 font-bold text-sm hover:bg-indigo-50 transition shadow">
+                                إعادة الاختبار من جديد
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MCQ Questions Container -->
+                <div id="mcq-container" class="space-y-4"></div>
+
+                <!-- Bottom Exam Controls -->
+                <div class="sticky bottom-4 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl flex flex-wrap items-center justify-between gap-3">
+                    <div class="text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300">
+                        <span id="bottom-progress-label">أجب عن الأسئلة الثمانين ثم اضغط على زر التصحيح</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="resetExam()" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-bold transition">
+                            تصفير الإجابات
+                        </button>
+                        <button onclick="gradeExam()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-md transition">
+                            تصحيح الاختبار وإظهار الإجابات
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FOOTER: Developer Rights & Instagram Link -->
+    <!-- ========================================== -->
+    <footer class="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center space-y-3">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                <span class="text-sm sm:text-base font-bold text-slate-700 dark:text-slate-200">
+                    جميع الحقوق محفوظة &copy; للمبرمج
+                </span>
+                <a href="https://www.instagram.com/b9.is"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="حساب المبرمج بكر جاسم حسن على إنستغرام @b9.is"
+                   class="inline-flex items-center gap-1.5 text-sm sm:text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-80 underline decoration-indigo-500/50 underline-offset-4 transition">
+                    <span>بكر جاسم حسن</span>
+                    <svg class="w-4 h-4 text-pink-600 inline" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400" dir="ltr">
+                Instagram: <a href="https://www.instagram.com/b9.is" target="_blank" rel="noopener noreferrer" class="font-mono font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">@b9.is</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC (Output Quiz + 80 MCQs) -->
+    <!-- ========================================== -->
+    <script>
+        // 1. Theme Management
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlEl = document.documentElement;
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlEl.classList.add('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark');
+            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 2. Mobile Drawer Navigation
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const mobileBackdrop = document.getElementById('mobile-backdrop');
+        const desktopNav = document.getElementById('desktop-nav-links');
+        const mobileNav = document.getElementById('mobile-nav-links');
+
+        mobileNav.innerHTML = desktopNav.innerHTML;
+        const openDrawer = () => mobileDrawer.classList.remove('hidden');
+        const closeDrawer = () => mobileDrawer.classList.add('hidden');
+        mobileMenuBtn.addEventListener('click', openDrawer);
+        closeMobileMenu.addEventListener('click', closeDrawer);
+        mobileBackdrop.addEventListener('click', closeDrawer);
+        mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeDrawer));
+
+        // 3. Toast Notification & Copy Code
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 2500);
+        }
+
+        function copyCode(btn) {
+            const pre = btn.parentElement.querySelector('pre');
+            const text = pre.innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('تم نسخ الكود إلى الحافظة!');
+        }
+
+        // 4. Search Filter
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.trim().toLowerCase();
+            document.querySelectorAll('.searchable-section').forEach(sec => {
+                if (!term || sec.innerText.toLowerCase().includes(term)) {
+                    sec.classList.remove('hidden');
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+        });
+
+        // 5. Output Questions Data (All 12 Questions)
+        const outputQuestions = [
+            { id: 1, code: 'int x = 5;\nx += 3;\nConsole.WriteLine(x);', ans: '8', exp: 'x = 5 + 3 = 8' },
+            { id: 2, code: 'int x = 10;\nx -= 4;\nConsole.WriteLine(x);', ans: '6', exp: 'x = 10 - 4 = 6' },
+            { id: 3, code: 'Console.WriteLine(10 % 3);', ans: '1', exp: 'باقي قسمة 10 على 3 هو 1' },
+            { id: 4, code: 'Console.WriteLine(10 / 3);', ans: '3', exp: 'قسمة عددين صحيحين تعطي عدداً صحيحاً (تهمل الكسور)' },
+            { id: 5, code: 'int[] a = { 2, 4, 6 };\nConsole.WriteLine(a[1]);', ans: '4', exp: 'الفهرسة تبدأ من صفر: a[0]=2, a[1]=4' },
+            { id: 6, code: 'for (int i = 1; i <= 3; i++)\n    Console.WriteLine(i);', ans: '1\n2\n3', exp: 'تطبع الأرقام من 1 إلى 3 كل رقم في سطر' },
+            { id: 7, code: 'int x = 5;\nif (x > 3) Console.WriteLine("Yes");\nelse Console.WriteLine("No");', ans: 'Yes', exp: 'الشرط 5 > 3 صحيح فيطبع Yes' },
+            { id: 8, code: 'string name = "Ali";\nConsole.WriteLine($"Hello {name}");', ans: 'Hello Ali', exp: 'String Interpolation يعوض قيمة name داخل النص' },
+            { id: 9, code: 'int x = 2;\nx *= 4;\nConsole.WriteLine(x);', ans: '8', exp: 'x = 2 * 4 = 8' },
+            { id: 10, code: 'int clicks = 0;\nclicks++;\nclicks++;\nConsole.WriteLine(clicks);', ans: '2', exp: 'تمت زيادة clicks مرتين بمقدار 1' },
+            { id: 11, code: 'int age = 20;\nConsole.WriteLine(age >= 18 && age < 30);', ans: 'True', exp: 'كلا الشرطين صحيحان لذا النتيجة المنطقية True' },
+            { id: 12, code: 'string[] names = { "Ali", "Sara" };\nConsole.WriteLine(names[0]);', ans: 'Ali', exp: 'أول عنصر في المصفوفة عند الفهرس 0 هو Ali' }
+        ];
+
+        const solvedOutputs = new Set();
+        const outputGrid = document.getElementById('output-grid');
+
+        function renderOutputQuestions() {
+            outputGrid.innerHTML = outputQuestions.map(q => `
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col justify-between gap-3">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400">سؤال ${q.id}</span>
+                            <button onclick="toggleSingleOutput(${q.id})" id="out-btn-${q.id}" class="px-3 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold hover:bg-indigo-200 transition">
+                                إظهار الناتج
+                            </button>
+                        </div>
+                        <pre class="bg-slate-900 text-slate-100 p-3 rounded-xl text-xs leading-relaxed"><code>${q.code}</code></pre>
+                    </div>
+                    <div id="out-ans-${q.id}" class="hidden p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-xs">
+                        <div class="font-bold text-emerald-700 dark:text-emerald-300 mb-1">الناتج: <pre class="inline font-mono bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 text-slate-900 dark:text-white">${q.ans}</pre></div>
+                        <p class="text-slate-600 dark:text-slate-300">${q.exp}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateOutputCounter() {
+            document.getElementById('output-counter').textContent = `${solvedOutputs.size} / 12 محلول`;
+        }
+
+        function toggleSingleOutput(id) {
+            const ansBox = document.getElementById(`out-ans-${id}`);
+            const btn = document.getElementById(`out-btn-${id}`);
+            const isHidden = ansBox.classList.contains('hidden');
+            if (isHidden) {
+                ansBox.classList.remove('hidden');
+                btn.textContent = 'إخفاء الناتج';
+                solvedOutputs.add(id);
+            } else {
+                ansBox.classList.add('hidden');
+                btn.textContent = 'إظهار الناتج';
+                solvedOutputs.delete(id);
+            }
+            updateOutputCounter();
+        }
+
+        function toggleAllOutputs(show) {
+            outputQuestions.forEach(q => {
+                const ansBox = document.getElementById(`out-ans-${q.id}`);
+                const btn = document.getElementById(`out-btn-${q.id}`);
+                if (show) {
+                    ansBox.classList.remove('hidden');
+                    btn.textContent = 'إخفاء الناتج';
+                    solvedOutputs.add(q.id);
+                } else {
+                    ansBox.classList.add('hidden');
+                    btn.textContent = 'إظهار الناتج';
+                    solvedOutputs.delete(q.id);
+                }
+            });
+            updateOutputCounter();
+        }
+
+        // 6. Comprehensive 80 MCQ Questions Data (40 Original + 40 New Exam-Focused Questions)
+        const mcqData = [
+            // Q1 - Q40 (Original 40 Questions)
+            { q: "Who developed C#?", opts: ["Google", "Microsoft", "Apple", "Oracle"], a: 1 },
+            { q: "Which is the entry point of a traditional C# program?", opts: ["Start()", "Run()", "Main()", "Begin()"], a: 2 },
+            { q: "Which data type stores true or false?", opts: ["int", "char", "bool", "double"], a: 2 },
+            { q: "Which method prints text with a new line?", opts: ["Write()", "WriteLine()", "ReadLine()", "Parse()"], a: 1 },
+            { q: "What does Console.ReadLine() return?", opts: ["int", "double", "string", "bool"], a: 2 },
+            { q: "Which method safely converts a string to an integer?", opts: ["Parse()", "TryParse()", "WriteLine()", "ReadLine()"], a: 1 },
+            { q: "What is the first index of an array?", opts: ["1", "-1", "0", "2"], a: 2 },
+            { q: "Which keyword defines a constant?", opts: ["var", "static", "const", "new"], a: 2 },
+            { q: "Which loop executes at least once?", opts: ["for", "while", "foreach", "do while"], a: 3 },
+            { q: "Which keyword creates an object?", opts: ["class", "new", "this", "using"], a: 1 },
+            { q: "What does get do in a property?", opts: ["Changes value", "Reads value", "Deletes value", "Creates class"], a: 1 },
+            { q: "What is the role of a constructor?", opts: ["Deletes object", "Runs when object is created", "Raises events", "Prints text"], a: 1 },
+            { q: "What does CLR stand for?", opts: ["Common Language Runtime", "Computer Language Reader", "Code Library Runtime", "Common Logic Reader"], a: 0 },
+            { q: "What controls the order of actions in a GUI?", opts: ["Only Main", "User actions", "Compiler", "Array"], a: 1 },
+            { q: "What is an Event Handler?", opts: ["A variable", "Code that runs in response to an event", "A layout container", "A data type"], a: 1 },
+            { q: "What is the Event Loop responsible for?", opts: ["Creating classes", "Waiting for and dispatching events", "Storing variables", "Compiling XML"], a: 1 },
+            { q: "Who calls the event handler in WPF?", opts: ["The user directly", "WPF framework", "The compiler", "The database"], a: 1 },
+            { q: "What does += do with an event?", opts: ["Removes handler", "Adds handler", "Raises exception", "Stops event"], a: 1 },
+            { q: "What does -= do?", opts: ["Adds handler", "Removes handler", "Creates object", "Changes property"], a: 1 },
+            { q: "What does sender represent?", opts: ["Event source object", "Event return value", "Window title", "Compiler"], a: 0 },
+            { q: "What does Action represent?", opts: ["Delegate returning a value", "Delegate returning nothing", "A class", "A routed event"], a: 1 },
+            { q: "What does Func represent?", opts: ["A delegate returning a value", "A delegate returning nothing", "A Window", "A control"], a: 0 },
+            { q: "What happens if the same handler is subscribed twice?", opts: ["It never runs", "It runs twice", "The app closes", "It becomes null"], a: 1 },
+            { q: "What is the purpose of ?.Invoke?", opts: ["Calls only when event is not null", "Deletes the event", "Creates subscriber", "Stops bubbling"], a: 0 },
+            { q: "Who can raise an event declared with event?", opts: ["Any outside class", "Only the owner class", "Every subscriber", "The compiler only"], a: 1 },
+            { q: "Which event type travels from source to parent?", opts: ["Direct", "Tunneling", "Bubbling", "Loaded"], a: 2 },
+            { q: "Which routing direction does Tunneling use?", opts: ["Source to parent", "Parent to source", "Source only", "No direction"], a: 1 },
+            { q: "Which property marks a routed event as handled?", opts: ["sender", "Handled", "e.Handled", "e.Source"], a: 2 },
+            { q: "What does e.Source identify?", opts: ["The handler owner", "The original event source", "The window", "The publisher class"], a: 1 },
+            { q: "Which container arranges controls in rows and columns?", opts: ["Grid", "Button", "TextBox", "Menu"], a: 0 },
+            { q: "Which container docks elements to Top or Bottom?", opts: ["Grid", "DockPanel", "GroupBox", "ListBox"], a: 1 },
+            { q: "Which container arranges elements horizontally or vertically?", opts: ["StackPanel", "Window", "DatePicker", "StatusBar"], a: 0 },
+            { q: "What does Width='Auto' mean in Grid?", opts: ["Take all remaining space", "Fit the content", "Hide the column", "Double width"], a: 1 },
+            { q: "What does Width='*' mean?", opts: ["Fit content", "Share remaining space", "Fixed width", "Zero width"], a: 1 },
+            { q: "What does Margin represent?", opts: ["Inside spacing", "Outside spacing", "Text color", "Control name"], a: 1 },
+            { q: "Which property allows a TextBox to accept multiple lines?", opts: ["MaxLength", "AcceptsReturn", "SelectedIndex", "Dock"], a: 1 },
+            { q: "Which property reads the selected date?", opts: ["SelectedItem", "SelectedIndex", "SelectedDate", "TextWrapping"], a: 2 },
+            { q: "What is the purpose of GroupBox?", opts: ["Group related controls", "Handle click events", "Store arrays", "Run methods"], a: 0 },
+            { q: "Which control displays a list of items?", opts: ["ListBox", "Button", "Label", "DatePicker"], a: 0 },
+            { q: "Which property carries additional data in a ComboBoxItem?", opts: ["Header", "Tag", "Margin", "Content only"], a: 1 },
+
+            // Q41 - Q80 (40 Additional Comprehensive Questions covering Foundation + Weeks 5, 6, 7 & Week 8 Pages 1-17)
+            { q: "What does WPF stand for?", opts: ["Windows Programming File", "Windows Presentation Foundation", "Web Page Framework", "Windows Platform Form"], a: 1 },
+            { q: "Which data type provides the highest decimal precision for financial values?", opts: ["float", "double", "decimal", "int"], a: 2 },
+            { q: "What happens if you assign a string to an integer variable declared with 'var x = 10;'?", opts: ["x automatically becomes string", "Compile-time error occurs", "Runtime warning only", "Value becomes 0"], a: 1 },
+            { q: "What exception is thrown when int.Parse(\"ABC\") fails?", opts: ["NullReferenceException", "IndexOutOfRangeException", "FormatException", "DivideByZeroException"], a: 2 },
+            { q: "Which operator returns the remainder of an integer division?", opts: ["/", "%", "*", "//"], a: 1 },
+            { q: "In C#, what is the output of 10 / 3?", opts: ["3.33", "3", "1", "0"], a: 1 },
+            { q: "Which access modifier restricts a member to be accessible ONLY inside its own class?", opts: ["public", "internal", "protected", "private"], a: 3 },
+            { q: "Which block in exception handling always executes regardless of whether an error occurred?", opts: ["try", "catch", "finally", "throw"], a: 2 },
+            { q: "Which component of CLR automatically frees memory of unused objects?", opts: ["Event Loop", "Garbage Collection", "Compiler", "Dispatcher"], a: 1 },
+            { q: "What is the file extension of a C# source code file?", opts: [".csproj", ".xaml", ".cs", ".dll"], a: 2 },
+            { q: "Which statement best describes Inversion of Control (IoC) in GUI programming?", opts: ["Your code calls the library", "The framework calls your code", "The compiler runs loops", "The database controls UI"], a: 1 },
+            { q: "In a Console application, how does program execution flow?", opts: ["Event-driven flow", "Linear flow determined by the program", "Random user-triggered flow", "Through XAML triggers"], a: 1 },
+            { q: "Which event occurs when a WPF Window finishes loading?", opts: ["Closing", "Loaded", "Tick", "TextChanged"], a: 1 },
+            { q: "Which principle is a best practice for writing Event Handlers?", opts: ["Put long blocking loops inside handlers", "Keep handlers short and focused on one job", "Copy-paste identical handlers everywhere", "Skip input validation"], a: 1 },
+            { q: "What is a Delegate in C#?", opts: ["A UI layout container", "A type-safe reference to a method", "An XML attribute", "A loop structure"], a: 1 },
+            { q: "In Func<int, int, string>, what is the return type of the method?", opts: ["int", "string", "void", "bool"], a: 1 },
+            { q: "Which event is raised when a user changes the selected option in a ComboBox?", opts: ["Click", "TextChanged", "SelectionChanged", "Checked"], a: 2 },
+            { q: "In the Greeter program, what changes when the user selects Spanish in the ComboBox?", opts: ["The Button control is deleted", "The method referenced by the Func delegate changes", "The XAML file is recompiled", "The Window closes"], a: 1 },
+            { q: "Which operators are allowed on an event from outside its owner class?", opts: ["= and ==", "+= and -=", "*= and /=", "Invoke() only"], a: 1 },
+            { q: "What is the role of the Publisher in the Publisher-Subscriber pattern?", opts: ["Subscribes using +=", "Declares and raises the event", "Unsubscribes using -=", "Handles UI rendering"], a: 1 },
+            { q: "Which CheckBox event fires when the user checks the box?", opts: ["SelectionChanged", "Checked", "ClickOnly", "Activated"], a: 1 },
+            { q: "When sharing one Click handler among multiple digit buttons, how do you get the clicked button?", opts: ["Using e.Handled", "Casting sender to Button", "Reading Window.Title", "Using Console.ReadLine()"], a: 1 },
+            { q: "Tunneling routed events in WPF conventionally start with which prefix?", opts: ["After", "On", "Preview", "Post"], a: 2 },
+            { q: "Which routing strategy occurs ONLY on the source element without traveling up or down the tree?", opts: ["Bubbling", "Tunneling", "Direct", "Cascading"], a: 2 },
+            { q: "If a StackPanel handles Button.Click and you click a child Button, what is 'sender'?", opts: ["The child Button", "The StackPanel", "The Window", "null"], a: 1 },
+            { q: "In the same scenario (StackPanel handling Button.Click), what is 'e.Source'?", opts: ["The StackPanel", "The clicked child Button", "The Application class", "RoutedEventArgs"], a: 1 },
+            { q: "What happens if a long Thread.Sleep(10000) runs inside a Button Click handler?", opts: ["It runs in the background smoothly", "The UI Window freezes for 10 seconds", "It throws FormatException", "It closes the app immediately"], a: 1 },
+            { q: "How many direct child elements can a WPF Window contain?", opts: ["Unlimited", "Only one root child element", "Exactly two", "Zero"], a: 1 },
+            { q: "In a DockPanel, what is the default value of LastChildFill?", opts: ["False", "True", "Auto", "Null"], a: 1 },
+            { q: "Which attached property positions a Menu at the top of a DockPanel?", opts: ["Grid.Row=\"0\"", "DockPanel.Dock=\"Top\"", "Orientation=\"Top\"", "Margin=\"Top\""], a: 1 },
+            { q: "In a Grid with two columns defined as Width=\"3*\" and Width=\"2*\", how is space divided?", opts: ["50% and 50%", "3/5 and 2/5", "3 pixels and 2 pixels", "Auto and Hidden"], a: 1 },
+            { q: "What is the default Orientation of a StackPanel if not specified?", opts: ["Horizontal", "Vertical", "Grid", "Wrap"], a: 1 },
+            { q: "What does Padding represent in WPF controls?", opts: ["Space outside the control border", "Space inside the control border", "Distance between windows", "Font size"], a: 1 },
+            { q: "In XAML, what is the correct order of values when specifying Margin=\"10,20,30,40\"?", opts: ["Top, Right, Bottom, Left", "Left, Top, Right, Bottom", "Left, Right, Top, Bottom", "Top, Bottom, Left, Right"], a: 1 },
+            { q: "Which XAML attribute gives a control a unique identifier accessible in C# code-behind?", opts: ["Tag", "Header", "x:Name", "Content"], a: 2 },
+            { q: "Which property sets the title text of a GroupBox?", opts: ["Content", "Text", "Header", "Title"], a: 2 },
+            { q: "Which property limits the maximum number of characters a user can type into a TextBox?", opts: ["TextWrapping", "MaxLength", "AcceptsReturn", "SelectedIndex"], a: 1 },
+            { q: "Which property makes long text wrap onto the next line inside a TextBox?", opts: ["AcceptsReturn=\"True\"", "TextWrapping=\"Wrap\"", "DockPanel.Dock=\"Wrap\"", "Orientation=\"Wrap\""], a: 1 },
+            { q: "What is the return type of DatePicker.SelectedDate in C#?", opts: ["string", "DateTime", "DateTime?", "int"], a: 2 },
+            { q: "Which attribute makes a control span across multiple columns in a Grid?", opts: ["Grid.RowSpan", "Grid.ColumnSpan", "ColumnDefinition", "StackPanel.Span"], a: 1 }
+        ];
+
+        const userAnswers = new Array(mcqData.length).fill(null);
+        let isGraded = false;
+
+        function renderMCQs() {
+            const container = document.getElementById('mcq-container');
+            const letters = ['A', 'B', 'C', 'D'];
+
+            container.innerHTML = mcqData.map((item, qIdx) => {
+                return `
+                <div id="mcq-card-${qIdx}" class="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 transition-all" dir="ltr">
+                    <div class="flex items-start gap-3 mb-3">
+                        <span class="shrink-0 px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-xs font-bold">Q${qIdx + 1}</span>
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-snug">${item.q}</h3>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-2.5 pl-0 sm:pl-10">
+                        ${item.opts.map((opt, oIdx) => `
+                            <button type="button"
+                                    onclick="selectOption(${qIdx}, ${oIdx})"
+                                    id="opt-${qIdx}-${oIdx}"
+                                    class="opt-btn text-left px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-indigo-400 dark:hover:border-indigo-500 text-xs sm:text-sm font-medium flex items-center gap-2.5 transition">
+                                <span class="opt-letter w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-xs font-bold shrink-0">${letters[oIdx]}</span>
+                                <span class="flex-1">${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-${qIdx}" class="hidden mt-3 pl-0 sm:pl-10 text-xs font-bold"></div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function selectOption(qIdx, oIdx) {
+            if (isGraded) return;
+            userAnswers[qIdx] = oIdx;
+
+            // Update styling for this question's options
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-${qIdx}-${i}`);
+                const letter = btn.querySelector('.opt-letter');
+                if (i === oIdx) {
+                    btn.classList.add('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/60', 'dark:border-indigo-500');
+                    letter.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                    letter.classList.add('bg-indigo-600', 'text-white');
+                } else {
+                    btn.classList.remove('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/60', 'dark:border-indigo-500');
+                    letter.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+                    letter.classList.remove('bg-indigo-600', 'text-white');
+                }
+            }
+
+            updateMCQProgress();
+        }
+
+        function updateMCQProgress() {
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            const total = mcqData.length;
+            const pct = Math.round((answeredCount / total) * 100);
+            document.getElementById('mcq-progress-text').textContent = `${answeredCount} / ${total} مجاب`;
+            document.getElementById('mcq-progress-bar').style.width = `${pct}%`;
+            document.getElementById('bottom-progress-label').textContent = `تمت الإجابة على ${answeredCount} من أصل ${total} سؤال (${pct}%)`;
+        }
+
+        function gradeExam() {
+            isGraded = true;
+            let score = 0;
+            const letters = ['A', 'B', 'C', 'D'];
+
+            mcqData.forEach((item, qIdx) => {
+                const userChoice = userAnswers[qIdx];
+                const correctChoice = item.a;
+                const card = document.getElementById(`mcq-card-${qIdx}`);
+                const feedback = document.getElementById(`feedback-${qIdx}`);
+
+                // Reset option styles and apply grading colors
+                for (let i = 0; i < 4; i++) {
+                    const btn = document.getElementById(`opt-${qIdx}-${i}`);
+                    btn.classList.remove('border-indigo-600', 'bg-indigo-50', 'dark:bg-indigo-950/60', 'dark:border-indigo-500');
+
+                    if (i === correctChoice) {
+                        btn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/60', 'text-emerald-900', 'dark:text-emerald-200');
+                        btn.querySelector('.opt-letter').className = 'opt-letter w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0';
+                    } else if (i === userChoice && userChoice !== correctChoice) {
+                        btn.classList.add('border-rose-500', 'bg-rose-50', 'dark:bg-rose-950/60', 'text-rose-900', 'dark:text-rose-200');
+                        btn.querySelector('.opt-letter').className = 'opt-letter w-6 h-6 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0';
+                    }
+                }
+
+                feedback.classList.remove('hidden');
+                if (userChoice === correctChoice) {
+                    score++;
+                    card.classList.add('border-emerald-400', 'dark:border-emerald-700');
+                    feedback.innerHTML = `<span class="text-emerald-600 dark:text-emerald-400">✓ Correct! (${letters[correctChoice]})</span>`;
+                } else if (userChoice === null) {
+                    card.classList.add('border-amber-400', 'dark:border-amber-700');
+                    feedback.innerHTML = `<span class="text-amber-600 dark:text-amber-400">! Unanswered — Correct Answer: ${letters[correctChoice]}. ${item.opts[correctChoice]}</span>`;
+                } else {
+                    card.classList.add('border-rose-400', 'dark:border-rose-700');
+                    feedback.innerHTML = `<span class="text-rose-600 dark:text-rose-400">✗ Incorrect — Correct Answer: ${letters[correctChoice]}. ${item.opts[correctChoice]}</span>`;
+                }
+            });
+
+            const banner = document.getElementById('exam-result-banner');
+            banner.classList.remove('hidden');
+            const pct = Math.round((score / mcqData.length) * 100);
+            document.getElementById('exam-score-title').textContent = `نتيجتك النهائية: ${score} / ${mcqData.length} (${pct}%)`;
+            document.getElementById('exam-score-subtitle').textContent = score >= 40
+                ? 'أداء ممتاز! تم تصحيح جميع الأسئلة الثمانين وإظهار الإجابات الصحيحة.'
+                : 'تم تصحيح جميع الأسئلة. راجع الإجابات المحددة بالأخضر وحاول مرة أخرى!';
+
+            document.getElementById('sec-9').scrollIntoView({ behavior: 'smooth' });
+            showToast(`تم تصحيح الاختبار! درجتك: ${score} من 80`);
+        }
+
+        function resetExam() {
+            isGraded = false;
+            userAnswers.fill(null);
+            document.getElementById('exam-result-banner').classList.add('hidden');
+            renderMCQs();
+            updateMCQProgress();
+            showToast('تم تصفير الاختبار بنجاح!');
+        }
+
+        // Initialize Page
+        window.addEventListener('DOMContentLoaded', () => {
+            renderOutputQuestions();
+            renderMCQs();
+            updateMCQProgress();
+        });
+    </script>
+</body>
+</html>
